@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-.factory('ThreeOneOne', function ($log, $http, $q, complainables, Utils) {
+.factory('ThreeOneOne', function ($log, $http, $q, Geo, complainables, Utils) {
   //\\
   $log.log('ThreeOneOne Factory in module main ready for action.');
 
@@ -82,6 +82,12 @@ angular.module('main')
     return defer.promise;
   };
 
+  // var addToGeofire = function (key, loc) {
+  //   return Geo.set(key, loc).then(function added311ToGeofire () {
+  //     $log.log('Added case id: ' + key + ' to geofire at ' + loc);
+  //   });
+  // };
+
   var getBoston311Data = function(query) {
 
     var defer = $q.defer();
@@ -101,21 +107,35 @@ angular.module('main')
     asyncHTTP(query)
       .then(function successful311Query(data) {
         for (var i = 0; i < data.data.length; i++) {
-            var loc = {
-                latitude: data.data[i].latitude,
-                longitude: data.data[i].longitude
-            };
-            boston311MarkerInfos.push({
-                id: data.data[i].case_enquiry_id,
 
-                description: data.data[i].case_title,
-                location: loc,
-                address: data.data[i].location,
-                case_status: data.data[i].case_status,
-                open_dt: data.data[i].open_dt,
-                closed_dt: data.data[i].closed_dt
-            });
+          // for geofire
+          var locArray = [
+            data.data[i].latitude,
+            data.data[i].longitude
+          ];
+
+          // for markers
+          var loc = {
+              latitude: data.data[i].latitude,
+              longitude: data.data[i].longitude
+          };
+
+          // Add to geofire
+          // addToGeofire(data.data[i].case_enquiry_id, locArray);
+
+          boston311MarkerInfos.push({
+              id: data.data[i].case_enquiry_id,
+
+              description: data.data[i].case_title,
+              location: loc,
+              address: data.data[i].location,
+              case_status: data.data[i].case_status,
+              open_dt: data.data[i].open_dt,
+              closed_dt: data.data[i].closed_dt
+          });
         }
+
+
         var boston311MarkerInfos_WithIcons = Utils.setIcons(boston311MarkerInfos);
 
         defer.resolve(boston311MarkerInfos_WithIcons);

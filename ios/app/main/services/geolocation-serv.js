@@ -1,6 +1,14 @@
 'use strict';
 angular.module('main')
 
+// Geofire via angularGeoFire (which creates scoped binding for geofire events)
+// .factory('Geo', ['Ref', '$geofire', function (Ref, $geofire) {
+//   // Note: without angularGeoFire, just remove '$geofire' injections and use
+//   // return new GeoFire(Ref.child('geo'));
+
+//   return $geofire(Ref.child('geo'));
+// }])
+
 // Promise to get current user's geolocation and ( and we could set it in a userGeo ref)
 .factory('Geolocation', function ($cordovaGeolocation, $q, $http) {
   console.log('GeoLocate Factory reporting for duty.');
