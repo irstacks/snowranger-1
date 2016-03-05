@@ -163,5 +163,14 @@ angular.module('main', [
           }
         }
       })
+      .state('testes', {
+        url: '/testes',
+        views: {
+          'testes': {
+            templateUrl: 'main/templates/testes.html',
+            controller: 'TestesCtrl'
+          }
+        }
+      })
       ;
 });
